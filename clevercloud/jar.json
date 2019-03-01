@@ -1,0 +1,9 @@
+{
+  "build": {
+    "type": "maven",
+    "goal": "package"
+  },
+  "deploy": {
+    "jarName": "target/games-explorer-0.0.1-SNAPSHOT.jar"
+  }
+}
