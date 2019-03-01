@@ -1,10 +1,10 @@
-package io.edge.api.verticle;
+package io.edge.games.explorer.verticle;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import io.edge.api.utils.OpenAPI3RouterBufferFactory;
+import io.edge.games.explorer.util.OpenAPI3RouterBufferFactory;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
@@ -26,11 +26,11 @@ public class ProxyVerticle extends AbstractVerticle {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProxyVerticle.class);
 
 	private void loadApiService(Router mainRouter, Record record) {
-		
+
 		String supath = record.getMetadata().getString("supath");
-		
+
 		String endpoint = record.getLocation().getString("endpoint");
-		
+
 		DeliveryOptions o = new DeliveryOptions();
 
 		o.addHeader("action", "getOpenAPI");
@@ -44,16 +44,11 @@ public class ProxyVerticle extends AbstractVerticle {
 				Buffer buffer = response.result().body();
 
 				// TODO : create routes
-				
+
 				Handler<RoutingContext> circuitBrakerHandler = routingContext -> {
-					
-					LOGGER.info("Call step 1");
-					
-					
-					
+
 					routingContext.next();
 				};
-				
 
 				OpenAPI3RouterBufferFactory.create(vertx, buffer, circuitBrakerHandler, result -> {
 
@@ -62,9 +57,9 @@ public class ProxyVerticle extends AbstractVerticle {
 						OpenAPI3RouterFactory routerFactory = result.result();
 
 						routerFactory.mountServicesFromExtensions();
-						
+
 						Router router = routerFactory.getRouter();
-						
+
 						mainRouter.mountSubRouter(supath, router);
 
 					} else {
@@ -78,16 +73,16 @@ public class ProxyVerticle extends AbstractVerticle {
 			}
 
 		});
-		
+
 	}
-	
+
 	@Override
 	public void start() {
 
 		/**
 		 * Start Http Server
 		 */
-		
+
 		Router mainRouter = Router.router(vertx);
 
 		mainRouter.route().handler(CorsHandler.create("*").allowedMethods(new HashSet<>(Arrays.asList(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE, HttpMethod.OPTIONS))));
@@ -108,27 +103,26 @@ public class ProxyVerticle extends AbstractVerticle {
 		/**
 		 * Load all published Web API Services
 		 */
-		
+
 		ServiceDiscovery serviceDiscovery = ServiceDiscovery.create(vertx);
-		
+
 		serviceDiscovery.getRecords(new JsonObject().put("type", "eventbus-webapi-service-proxy"), ar -> {
-			
-			if( ar.succeeded()) {
-				
+
+			if (ar.succeeded()) {
+
 				List<Record> recordList = ar.result();
-				
-				for(Record record : recordList) {
-					
+
+				for (Record record : recordList) {
+
 					this.loadApiService(mainRouter, record);
-					
+
 				}
-				
+
 			} else {
 				LOGGER.error("Cannot get records", ar.cause());
 			}
-			
+
 		});
-		
 
 		/**
 		 * Listen future Web API Services
@@ -138,7 +132,7 @@ public class ProxyVerticle extends AbstractVerticle {
 			JsonObject body = message.body();
 
 			if ("UP".equals(body.getString("status")) && "eventbus-webapi-service-proxy".equals(body.getString("type"))) {
-				Record record = new Record(body);				
+				Record record = new Record(body);
 				this.loadApiService(mainRouter, record);
 			}
 

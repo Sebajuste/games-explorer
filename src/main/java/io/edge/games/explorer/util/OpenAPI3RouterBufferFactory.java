@@ -1,4 +1,4 @@
-package io.edge.api.utils;
+package io.edge.games.explorer.util;
 
 import java.nio.charset.Charset;
 import java.util.Collections;
@@ -28,7 +28,7 @@ public class OpenAPI3RouterBufferFactory {
 	public static void create(Vertx vertx, Buffer buffer, Handler<AsyncResult<OpenAPI3RouterFactory>> handler) {
 		create(vertx, buffer, Collections.emptyList(), null, handler);
 	}
-	
+
 	public static void create(Vertx vertx, Buffer buffer, Handler<RoutingContext> globalHandler, Handler<AsyncResult<OpenAPI3RouterFactory>> handler) {
 		create(vertx, buffer, Collections.emptyList(), globalHandler, handler);
 	}

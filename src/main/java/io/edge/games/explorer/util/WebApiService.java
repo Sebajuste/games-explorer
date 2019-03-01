@@ -1,4 +1,4 @@
-package io.edge.utils.webapiservice;
+package io.edge.games.explorer.util;
 
 import java.util.Objects;
 

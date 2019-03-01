@@ -3,7 +3,6 @@ package io.edge.games.explorer.verticle;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.edge.api.verticle.ProxyVerticle;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;

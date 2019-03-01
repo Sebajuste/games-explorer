@@ -4,7 +4,7 @@ import io.edge.games.explorer.service.GameRegistry;
 import io.edge.games.explorer.service.GameRegistryAPI;
 import io.edge.games.explorer.service.impl.GameRegistryAPIImpl;
 import io.edge.games.explorer.service.impl.GameRegistryImpl;
-import io.edge.utils.webapiservice.WebApiService;
+import io.edge.games.explorer.util.WebApiService;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import io.vertx.serviceproxy.ServiceBinder;
