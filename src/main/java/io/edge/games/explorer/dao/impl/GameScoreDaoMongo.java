@@ -40,8 +40,8 @@ public class GameScoreDaoMongo implements GameScoreDao {
 				JsonObject query = new JsonObject()//
 						.put("game", game)//
 						.put("level", level);
-
-				client.find(GameScoreDaoMongo.COLLECTION, query, ar -> {
+				
+				this.client.find(GameScoreDaoMongo.COLLECTION, query, ar -> {
 
 					if (ar.succeeded()) {
 
@@ -90,11 +90,11 @@ public class GameScoreDaoMongo implements GameScoreDao {
 				UpdateOptions options = new UpdateOptions()//
 						.setUpsert(true);
 
-				client.updateCollectionWithOptions(GameScoreDaoMongo.COLLECTION, query, new JsonObject().put("$set", update), options, ar -> {
+				this.client.updateCollectionWithOptions(GameScoreDaoMongo.COLLECTION, query, new JsonObject().put("$set", update), options, ar -> {
 
 					if (ar.succeeded()) {
 						
-						future.complete(ar.result().getDocMatched() > 0);
+						future.complete(ar.result().getDocMatched() > 0 || ar.result().getDocModified() > 0 );
 					} else {
 						future.fail(ar.cause());
 					}
