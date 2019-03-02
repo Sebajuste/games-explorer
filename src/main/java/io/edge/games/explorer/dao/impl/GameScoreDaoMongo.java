@@ -93,7 +93,8 @@ public class GameScoreDaoMongo implements GameScoreDao {
 				client.updateCollectionWithOptions(GameScoreDaoMongo.COLLECTION, query, new JsonObject().put("$set", update), options, ar -> {
 
 					if (ar.succeeded()) {
-						future.complete(ar.result().getDocModified() > 0);
+						
+						future.complete(ar.result().getDocMatched() > 0);
 					} else {
 						future.fail(ar.cause());
 					}

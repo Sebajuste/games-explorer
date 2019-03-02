@@ -30,7 +30,7 @@ public class GameScoreAPIImpl implements GameScoreAPI {
 	public void getBestGameLevel(String gameName, String level, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
 
 		try {
-
+			
 			this.gameScoreDao.getBestScore(gameName, Integer.parseInt(level), ar -> {
 
 				if (ar.succeeded()) {
@@ -61,11 +61,11 @@ public class GameScoreAPIImpl implements GameScoreAPI {
 	}
 
 	@Override
-	public void pushScore(String gameName, String level, String username, JsonObject score, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
+	public void pushScore(String gameName, String level, String username, JsonObject body, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
 
 		try {
-
-			this.gameScoreDao.addScore(gameName, Integer.parseInt(level), username, score, ar -> {
+						
+			this.gameScoreDao.addScore(gameName, Integer.parseInt(level), username, body, ar -> {
 
 				OperationResponse response = new OperationResponse();
 

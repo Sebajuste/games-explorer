@@ -14,6 +14,6 @@ public interface GameScoreAPI {
 
 	void getBestGameLevel(String gameName, String level, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
 
-	void pushScore(String gameName, String level, String username, JsonObject score, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
+	void pushScore(String gameName, String level, String username, JsonObject body, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
 
 }

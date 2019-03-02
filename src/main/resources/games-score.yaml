@@ -32,7 +32,7 @@ paths:
       responses:
         200:
           description: "Get best score list"
-  /games/{gameName}/levels/{level}/username/{username}:
+  /games/{gameName}/levels/{level}/users/{username}:
     x-vertx-event-bus:
       address: games_scores
       timeout: 5000
@@ -59,13 +59,23 @@ paths:
             type: string
           required: true
           description: "Username of score's player"
-        - name: score
-          in: query
-          schema:
-            type: object
-          required: true
-          description: "Game score"
+      requestBody:
+        required: true
+        description: "Score data"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Score"
       responses:
         201:
           description: "Score added" 
   
+components:
+  schemas:
+    Score:
+      type: object
+      properties:
+        score:
+          type: integer
+        time:
+          type: integer
