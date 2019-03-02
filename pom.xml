@@ -81,14 +81,44 @@
 					<arguments>
 						<argument>run</argument>
 						<argument>${main.verticle}</argument>
-						<argument>-cluster</argument>
+						<!-- <argument>-cluster</argument>  -->
 					</arguments>
 
 					<systemProperties>
 
 						<systemProperty>
 							<key>webapi</key>
-							<value>false</value>
+							<value>true</value>
+						</systemProperty>
+
+						<systemProperty>
+							<key>MONGODB_ADDON_DB</key>
+							<value>bgbemzsq0xhkcm9</value>
+						</systemProperty>
+
+						<systemProperty>
+							<key>MONGODB_ADDON_HOST</key>
+							<value>bgbemzsq0xhkcm9-mongodb.services.clever-cloud.com</value>
+						</systemProperty>
+
+						<systemProperty>
+							<key>MONGODB_ADDON_PORT</key>
+							<value>27017</value>
+						</systemProperty>
+
+						<systemProperty>
+							<key>MONGODB_ADDON_USER</key>
+							<value>u4idilgl6rsmxnrylsmc</value>
+						</systemProperty>
+
+						<systemProperty>
+							<key>MONGODB_ADDON_PASSWORD</key>
+							<value>XDyYIBt9H75UMqEspUvI</value>
+						</systemProperty>
+
+						<systemProperty>
+							<key>MONGODB_ADDON_DB</key>
+							<value>bgbemzsq0xhkcm9</value>
 						</systemProperty>
 
 						<systemProperty>

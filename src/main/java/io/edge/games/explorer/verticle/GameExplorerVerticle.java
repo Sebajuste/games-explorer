@@ -7,9 +7,13 @@ import io.edge.games.explorer.service.impl.GameRegistryImpl;
 import io.edge.games.explorer.util.WebApiService;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.serviceproxy.ServiceBinder;
 
 public class GameExplorerVerticle extends AbstractVerticle {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameExplorerVerticle.class);
 
 	@Override
 	public void start() {
@@ -36,6 +40,8 @@ public class GameExplorerVerticle extends AbstractVerticle {
 				.put("subpath", "/games-explorer");
 
 		WebApiService.create(vertx).bind(config);
+
+		LOGGER.info("Game Explorer API started");
 
 	}
 

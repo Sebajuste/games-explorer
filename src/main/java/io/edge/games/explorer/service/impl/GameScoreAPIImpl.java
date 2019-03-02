@@ -1,5 +1,7 @@
 package io.edge.games.explorer.service.impl;
 
+import java.util.Objects;
+
 import io.edge.games.explorer.dao.GameScoreDao;
 import io.edge.games.explorer.service.GameScoreAPI;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -14,18 +16,18 @@ import io.vertx.ext.web.api.OperationRequest;
 import io.vertx.ext.web.api.OperationResponse;
 
 public class GameScoreAPIImpl implements GameScoreAPI {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameScoreAPIImpl.class);
 
 	private GameScoreDao gameScoreDao;
 
 	public GameScoreAPIImpl(GameScoreDao gameScoreDao) {
 		super();
-		this.gameScoreDao = gameScoreDao;
+		this.gameScoreDao = Objects.requireNonNull(gameScoreDao);
 	}
 
 	@Override
-	public void getAll(String gameName, String level, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
+	public void getBestGameLevel(String gameName, String level, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
 
 		try {
 
@@ -38,7 +40,7 @@ public class GameScoreAPIImpl implements GameScoreAPI {
 				} else {
 
 					LOGGER.error(ar.cause());
-					
+
 					OperationResponse response = new OperationResponse() //
 							.setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
 
@@ -49,7 +51,7 @@ public class GameScoreAPIImpl implements GameScoreAPI {
 
 		} catch (Exception e) {
 			LOGGER.error(e);
-			
+
 			OperationResponse response = new OperationResponse() //
 					.setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
 
@@ -88,7 +90,7 @@ public class GameScoreAPIImpl implements GameScoreAPI {
 
 		} catch (Exception e) {
 			LOGGER.error(e);
-			
+
 			OperationResponse response = new OperationResponse() //
 					.setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
 

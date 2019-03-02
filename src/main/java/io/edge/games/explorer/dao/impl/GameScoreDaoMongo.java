@@ -14,7 +14,7 @@ import io.vertx.ext.mongo.UpdateOptions;
 
 public class GameScoreDaoMongo implements GameScoreDao {
 
-	private static final String COLLECTION = "";
+	private static final String COLLECTION = "game_scores";
 
 	private final MongoClient client;
 

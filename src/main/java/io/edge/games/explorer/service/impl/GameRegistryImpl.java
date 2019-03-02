@@ -38,12 +38,8 @@ public class GameRegistryImpl implements GameRegistry {
 			String gameServerID = gameServer.getString("host") + ":" + String.valueOf(gameServer.getInteger("port"));
 
 			LocalMap<String, JsonObject> gameMap = sd.getLocalMap("edge.game.explorer." + gameName);
-
-			
-			//gameMap.put(gameServerID, gameServer);
 			
 			LOGGER.info(gameMap);
-			
 			
 			gameMap.merge(gameServerID, gameServer, (oldGameServer, newGameServer) -> {
 				return JsonObject.mapFrom(oldGameServer).mergeIn(newGameServer);

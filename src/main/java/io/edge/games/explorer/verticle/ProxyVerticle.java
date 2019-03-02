@@ -39,13 +39,15 @@ public class ProxyVerticle extends AbstractVerticle {
 
 			if (response.succeeded()) {
 
-				LOGGER.info("Response : " + response.result().body());
+				// LOGGER.info("Response : " + response.result().body());
 
 				Buffer buffer = response.result().body();
 
 				// TODO : create routes
 
 				Handler<RoutingContext> circuitBrakerHandler = routingContext -> {
+
+					LOGGER.info("Request called");
 
 					routingContext.next();
 				};
@@ -54,13 +56,21 @@ public class ProxyVerticle extends AbstractVerticle {
 
 					if (result.succeeded()) {
 
-						OpenAPI3RouterFactory routerFactory = result.result();
+						try {
 
-						routerFactory.mountServicesFromExtensions();
+							OpenAPI3RouterFactory routerFactory = result.result();
 
-						Router router = routerFactory.getRouter();
+							routerFactory.mountServicesFromExtensions();
 
-						mainRouter.mountSubRouter(supath, router);
+							Router router = routerFactory.getRouter();
+
+							mainRouter.mountSubRouter(supath, router);
+
+							LOGGER.info("API \"" + record.getName() + "\" mounted successfully");
+
+						} catch (Exception e) {
+							LOGGER.error("Cannot mount API", e);
+						}
 
 					} else {
 						LOGGER.error("Cannot read file", result.cause());

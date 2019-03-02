@@ -10,10 +10,10 @@ tags:
 paths:
   /games/{gameName}/levels/{level}/best:
     x-vertx-event-bus:
-      address: edge.games.score
+      address: games_scores
       timeout: 5000
     get:
-      operationId: getBest
+      operationId: getBestGameLevel
       tags:
         - Games
       parameters:
@@ -31,10 +31,10 @@ paths:
           description: "Game level"
       responses:
         200:
-          description: "Get Servers list"
+          description: "Get best score list"
   /games/{gameName}/levels/{level}/username/{username}:
     x-vertx-event-bus:
-      address: edge.games.score
+      address: games_scores
       timeout: 5000
     put:
       operationId: pushScore

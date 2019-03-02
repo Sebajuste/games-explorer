@@ -8,7 +8,7 @@ tags:
     description: ""
 
 paths:
-  /explorer/{gameName}/servers:
+  /games/{gameName}/servers:
     x-vertx-event-bus:
       address: edge.games.registries
       timeout: 5000

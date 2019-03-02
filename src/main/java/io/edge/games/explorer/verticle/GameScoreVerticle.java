@@ -7,11 +7,15 @@ import io.edge.games.explorer.service.impl.GameScoreAPIImpl;
 import io.edge.games.explorer.util.WebApiService;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.serviceproxy.ServiceBinder;
 
 public class GameScoreVerticle extends AbstractVerticle {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameScoreVerticle.class);
+	
 	@Override
 	public void start() {
 
@@ -55,6 +59,8 @@ public class GameScoreVerticle extends AbstractVerticle {
 
 		WebApiService.create(vertx).bind(config);
 
+		LOGGER.info("Game Score API started");
+		
 	}
 
 }
