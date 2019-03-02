@@ -32,8 +32,8 @@ public class GameExplorerVerticle extends AbstractVerticle {
 		JsonObject config = new JsonObject()//
 				.put("name", "Games-Explorer")//
 				.put("endpoint", "io.edge.games-explorer.yaml")//
-				.put("file", "src/main/resources/openapi.yaml")//
-				.put("subpath", "/edge/games");
+				.put("file", "src/main/resources/games-explorer.yaml")//
+				.put("subpath", "/games-explorer");
 
 		WebApiService.create(vertx).bind(config);
 

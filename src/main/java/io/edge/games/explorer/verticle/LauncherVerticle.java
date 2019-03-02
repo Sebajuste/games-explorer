@@ -38,7 +38,13 @@ public class LauncherVerticle extends AbstractVerticle {
 				this.vertx.deployVerticle(GameExplorerVerticle.class.getName(), options, gameExplorerDeployFuture);
 				futureList.add(gameExplorerDeployFuture);
 
-				if ( config.containsKey("webapi") && config.getBoolean("webapi")) {
+				if( config.getBoolean("score", true)) {
+					Future<String> deployFuture = Future.future();
+					this.vertx.deployVerticle(GameScoreVerticle.class.getName(), options, deployFuture);
+					futureList.add(deployFuture);
+				}
+				
+				if ( config.getBoolean("webapi", true)) {
 					Future<String> deployFuture = Future.future();
 					this.vertx.deployVerticle(ProxyVerticle.class.getName(), options, deployFuture);
 					futureList.add(deployFuture);

@@ -266,7 +266,6 @@ public class HolePunchingVerticle extends AbstractVerticle {
 				
 				this.socket.handler(this::onRequest);
 				
-				
 				this.vertx.setPeriodic(5000L, this::checkServerAlive);
 				
 				LOGGER.info("Hole Punching server started");

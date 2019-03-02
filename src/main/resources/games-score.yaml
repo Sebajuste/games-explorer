@@ -1,0 +1,71 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Games-Score
+
+tags:
+  - name: Games
+    description: "Games Score"
+
+paths:
+  /games/{gameName}/levels/{level}/best:
+    x-vertx-event-bus:
+      address: edge.games.score
+      timeout: 5000
+    get:
+      operationId: getBest
+      tags:
+        - Games
+      parameters:
+        - name: gameName
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game Identifier"
+        - name: level
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game level"
+      responses:
+        200:
+          description: "Get Servers list"
+  /games/{gameName}/levels/{level}/username/{username}:
+    x-vertx-event-bus:
+      address: edge.games.score
+      timeout: 5000
+    put:
+      operationId: pushScore
+      tags:
+        - Games
+      parameters:
+        - name: gameName
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game Identifier"
+        - name: level
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game level"
+        - name: username
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Username of score's player"
+        - name: score
+          in: query
+          schema:
+            type: object
+          required: true
+          description: "Game score"
+      responses:
+        201:
+          description: "Score added" 
+  
