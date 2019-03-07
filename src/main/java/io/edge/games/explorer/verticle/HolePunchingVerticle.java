@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.edge.games.explorer.bo.Client;
-import io.edge.games.explorer.service.GameRegistry;
+import io.edge.games.explorer.service.GameLobbyRegistry;
 import io.edge.games.explorer.service.impl.GameRegistryImpl;
 import io.edge.games.explorer.util.UDPReliability;
 import io.vertx.core.AbstractVerticle;
@@ -24,7 +24,7 @@ public class HolePunchingVerticle extends AbstractVerticle {
 
 	private final Map<Client, UDPReliability> reliabilityMap = new HashMap<>();
 	
-	private GameRegistry gameRegistry;
+	private GameLobbyRegistry gameRegistry;
 
 	private DatagramSocket socket;
 

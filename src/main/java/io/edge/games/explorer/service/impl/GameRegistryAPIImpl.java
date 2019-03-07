@@ -2,8 +2,8 @@ package io.edge.games.explorer.service.impl;
 
 import java.util.List;
 
-import io.edge.games.explorer.service.GameRegistry;
-import io.edge.games.explorer.service.GameRegistryAPI;
+import io.edge.games.explorer.service.GameLobbyRegistry;
+import io.edge.games.explorer.service.GameLobbyRegistryAPI;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
@@ -13,11 +13,11 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.api.OperationRequest;
 import io.vertx.ext.web.api.OperationResponse;
 
-public class GameRegistryAPIImpl implements GameRegistryAPI {
+public class GameRegistryAPIImpl implements GameLobbyRegistryAPI {
 
-	private final GameRegistry gameRegistry;
+	private final GameLobbyRegistry gameRegistry;
 
-	public GameRegistryAPIImpl(GameRegistry gameRegistry) {
+	public GameRegistryAPIImpl(GameLobbyRegistry gameRegistry) {
 		super();
 		this.gameRegistry = gameRegistry;
 	}

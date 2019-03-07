@@ -1,7 +1,7 @@
 package io.edge.games.explorer.verticle;
 
-import io.edge.games.explorer.service.GameRegistry;
-import io.edge.games.explorer.service.GameRegistryAPI;
+import io.edge.games.explorer.service.GameLobbyRegistry;
+import io.edge.games.explorer.service.GameLobbyRegistryAPI;
 import io.edge.games.explorer.service.impl.GameRegistryAPIImpl;
 import io.edge.games.explorer.service.impl.GameRegistryImpl;
 import io.edge.games.explorer.util.WebApiService;
@@ -18,7 +18,7 @@ public class GameExplorerVerticle extends AbstractVerticle {
 	@Override
 	public void start() {
 
-		GameRegistry gameRegistry = new GameRegistryImpl(vertx);
+		GameLobbyRegistry gameRegistry = new GameRegistryImpl(vertx);
 
 		/**
 		 * Bind API
@@ -26,8 +26,8 @@ public class GameExplorerVerticle extends AbstractVerticle {
 
 		ServiceBinder serviceBinder = new ServiceBinder(vertx);
 
-		GameRegistryAPI dashboardServiceAPI = new GameRegistryAPIImpl(gameRegistry);
-		serviceBinder.setAddress(GameRegistryAPI.ADDRESS).register(GameRegistryAPI.class, dashboardServiceAPI);
+		GameLobbyRegistryAPI dashboardServiceAPI = new GameRegistryAPIImpl(gameRegistry);
+		serviceBinder.setAddress(GameLobbyRegistryAPI.ADDRESS).register(GameLobbyRegistryAPI.class, dashboardServiceAPI);
 
 		/**
 		 * Publish Web API

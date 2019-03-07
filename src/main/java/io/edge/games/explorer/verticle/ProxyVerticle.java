@@ -47,7 +47,7 @@ public class ProxyVerticle extends AbstractVerticle {
 
 				Handler<RoutingContext> circuitBrakerHandler = routingContext -> {
 
-					LOGGER.info("Request called");
+					// LOGGER.info("Request called");
 
 					routingContext.next();
 				};

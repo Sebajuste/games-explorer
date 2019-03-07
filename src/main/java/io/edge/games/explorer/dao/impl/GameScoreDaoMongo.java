@@ -8,7 +8,9 @@ import io.vertx.circuitbreaker.CircuitBreaker;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.mongo.UpdateOptions;
 
@@ -41,12 +43,16 @@ public class GameScoreDaoMongo implements GameScoreDao {
 						.put("game", game)//
 						.put("level", level);
 				
-				this.client.find(GameScoreDaoMongo.COLLECTION, query, ar -> {
+				FindOptions options = new FindOptions()//
+						.setSort(new JsonObject().put("score", -1).put("time", 1));
+				
+				this.client.findWithOptions(GameScoreDaoMongo.COLLECTION, query, options, ar -> {
 
 					if (ar.succeeded()) {
 
 						List<JsonObject> scoreList = ar.result();
 
+						/*
 						scoreList.sort((score1, score2) -> {
 							int scoreDiff = score1.getInteger("score") - score2.getInteger("score");
 							if (scoreDiff != 0) {
@@ -54,6 +60,7 @@ public class GameScoreDaoMongo implements GameScoreDao {
 							}
 							return score1.getInteger("time") - score2.getInteger("time");
 						});
+						*/
 
 						future.complete(scoreList);
 
@@ -72,20 +79,29 @@ public class GameScoreDaoMongo implements GameScoreDao {
 	}
 
 	@Override
-	public void addScore(String game, int level, String username, JsonObject score, Handler<AsyncResult<Boolean>> resultHandler) {
+	public void addScore(String game, int level, String username, JsonObject scoreData, Handler<AsyncResult<Boolean>> resultHandler) {
 
 		this.addScoreCB.<Boolean> execute(future -> {
 
 			try {
 
+				int score = scoreData.getInteger("score");
+				int time = scoreData.getInteger("time");
+				
 				JsonObject query = new JsonObject()//
 						.put("game", game)//
 						.put("level", level)//
-						.put("username", username);
-
+						.put("username", username)
+						.put("$or", new JsonArray()//
+								.add(new JsonObject().put("score", new JsonObject().put("$gt", score)))//
+								.add(new JsonObject().put("$and", new JsonArray()//
+										.add(new JsonObject().put("score", new JsonObject().put("$eq", score)))//
+										.add(new JsonObject().put("time", new JsonObject().put("$lt", time)))))
+								);//
+						
 				JsonObject update = new JsonObject()//
-						.put("score", score.getInteger("score"))//
-						.put("time", score.getInteger("time"));
+						.put("score", score)//
+						.put("time", time);
 
 				UpdateOptions options = new UpdateOptions()//
 						.setUpsert(true);

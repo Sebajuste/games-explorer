@@ -6,7 +6,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
-public interface GameRegistry {
+public interface GameLobbyRegistry {
 
 	void register(String gameName, JsonObject gameServer, Handler<AsyncResult<Boolean>> resultHandler);
 

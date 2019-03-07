@@ -7,7 +7,7 @@ import io.vertx.ext.web.api.OperationResponse;
 import io.vertx.ext.web.api.generator.WebApiServiceGen;
 
 @WebApiServiceGen
-public interface GameRegistryAPI {
+public interface GameLobbyRegistryAPI {
 
 	static String ADDRESS = "edge.games.registries";
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import io.edge.games.explorer.service.GameRegistry;
+import io.edge.games.explorer.service.GameLobbyRegistry;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -15,7 +15,7 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.shareddata.LocalMap;
 import io.vertx.core.shareddata.SharedData;
 
-public class GameRegistryImpl implements GameRegistry {
+public class GameRegistryImpl implements GameLobbyRegistry {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameRegistryImpl.class);
 
