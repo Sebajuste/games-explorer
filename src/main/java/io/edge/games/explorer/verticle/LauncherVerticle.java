@@ -30,27 +30,31 @@ public class LauncherVerticle extends AbstractVerticle {
 				@SuppressWarnings("rawtypes")
 				List<Future> futureList = new ArrayList<>();
 
-				Future<String> holePunchingDeployFuture = Future.future();
-				this.vertx.deployVerticle(HolePunchingVerticle.class.getName(), options, holePunchingDeployFuture);
-				futureList.add(holePunchingDeployFuture);
+				if (config.getBoolean("holepunching", true)) {
+					Future<String> holePunchingDeployFuture = Future.future();
+					this.vertx.deployVerticle(HolePunchingVerticle.class.getName(), options, holePunchingDeployFuture);
+					futureList.add(holePunchingDeployFuture);
+				}
 
-				Future<String> gameExplorerDeployFuture = Future.future();
-				this.vertx.deployVerticle(GameExplorerVerticle.class.getName(), options, gameExplorerDeployFuture);
-				futureList.add(gameExplorerDeployFuture);
+				if (config.getBoolean("lobies", true)) {
+					Future<String> gameExplorerDeployFuture = Future.future();
+					this.vertx.deployVerticle(GameExplorerVerticle.class.getName(), options, gameExplorerDeployFuture);
+					futureList.add(gameExplorerDeployFuture);
+				}
 
-				if( config.getBoolean("score", true)) {
+				if (config.getBoolean("score", true)) {
 					Future<String> deployFuture = Future.future();
 					this.vertx.deployVerticle(GameScoreVerticle.class.getName(), options, deployFuture);
 					futureList.add(deployFuture);
 				}
-				
-				if ( config.getBoolean("webapi", true)) {
+
+				if (config.getBoolean("webapi", true)) {
 					Future<String> deployFuture = Future.future();
 					this.vertx.deployVerticle(ProxyVerticle.class.getName(), options, deployFuture);
 					futureList.add(deployFuture);
 				}
-				
-				if( config.getBoolean("matchmaking", true)) {
+
+				if (config.getBoolean("matchmaking", true)) {
 					Future<String> deployFuture = Future.future();
 					this.vertx.deployVerticle(MatchmakingVerticle.class.getName(), options, deployFuture);
 					futureList.add(deployFuture);
