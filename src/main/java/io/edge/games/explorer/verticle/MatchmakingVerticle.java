@@ -17,6 +17,7 @@ import io.reactivex.FlowableEmitter;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.flowables.GroupedFlowable;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -38,9 +39,12 @@ public class MatchmakingVerticle extends AbstractVerticle {
 
 	private int maxPlayerPerSession;
 	
-
-	private final Map<String, JsonObject> requestStatus = new HashMap<>();
+	/**
+	 * Time in seconds to wait other player before start the session if the minimum players requires is reached
+	 */
+	private int waitStartSessionTime = 15;
 	
+	private final Map<String, JsonObject> requestStatus = new HashMap<>();
 	
 	/**
 	 * Listen on the bus the join session request from players
@@ -149,17 +153,39 @@ public class MatchmakingVerticle extends AbstractVerticle {
 	 */
 	private void startGameSession(List<MatchmakingRequest> requests) {
 		
-		JsonObject master = requests.get(0).getPlayer();
+		JsonObject master = null;
+
+		JsonArray players = new JsonArray();
+		
+		for( MatchmakingRequest request : requests ) {
+			
+			JsonObject player = request.getPlayer();
+			
+			players.add( player );
+			
+			if( master == null && player.getString("host", "").length() > 0 && player.getInteger("port", -1) != -1 ) {
+				master = player;
+			}
+		}
+		
+		// If no master is valid, reinject players in the queue
+		if( master == null) {
+			
+			for( MatchmakingRequest request : requests ) {
+			
+				DeliveryOptions options = new DeliveryOptions()//
+						.addHeader("game", request.getGame())//
+						.addHeader("requestToken", request.getRequestToken());
+				this.vertx.eventBus().send("io.games.matchmaking.join-request", request.getPlayer(), options);
+				
+			}
+			
+			return;
+		}
 		
 		String masterName = master.getString("name");
 		String masterHost = master.getString("host");
 		int masterPort = master.getInteger("port");
-		
-		JsonArray players = new JsonArray();
-		
-		for( MatchmakingRequest request : requests ) {
-			players.add( request.getPlayer() );
-		}
 		
 		JsonObject response = new JsonObject()//
 				.put("status", "READY")//
@@ -188,6 +214,7 @@ public class MatchmakingVerticle extends AbstractVerticle {
 		
 		this.minPlayerPerSession = config().getInteger("MIN_PLAYERS_PER_SESSION", 2);
 		this.maxPlayerPerSession = config().getInteger("MAX_PLAYERS_PER_SESSION", 4);
+		this.waitStartSessionTime = config().getInteger("WAIT_START_SESSION_TIME", 15);
 
 		/**
 		 * Events
