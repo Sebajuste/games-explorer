@@ -12,6 +12,12 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
+/**
+ * Load configuration and start other Verticles
+ * 
+ * @author Sebastien
+ *
+ */
 public class LauncherVerticle extends AbstractVerticle {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LauncherVerticle.class);
