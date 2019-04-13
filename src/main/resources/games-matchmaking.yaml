@@ -1,0 +1,97 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Games-Matchmaking
+
+tags:
+  - name: Games
+    description: ""
+  - name: Matchmaking
+    description: ""
+
+paths:
+  /games/{gameName}/matchmaking/join:
+    x-vertx-event-bus:
+      address: edge.games.matchmaking.wabapi
+      timeout: 10000
+    post:
+      operationId: joinRequest
+      tags:
+        - Games
+        - Matchmaking
+      parameters:
+        - name: gameName
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game Identifier"
+      requestBody:
+        required: true
+        description: "Player information"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayerInformation"
+      responses:
+        200:
+          description: "OK"
+  /games/{gameName}/matchmaking/{requestToken}:
+    x-vertx-event-bus:
+      address: edge.games.matchmaking.wabapi
+      timeout: 10000
+    get:
+      operationId: getStatus
+      tags:
+        - Games
+        - Matchmaking
+      parameters:
+        - name: gameName
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game Identifier"
+        - name: requestToken
+          in: path
+          schema:
+            type: string
+          description: "Request Identifier"
+      responses:
+        200:
+          description: "OK"
+        204:
+          description: "Session not ready"
+        400:
+          description: "Join request does not exist"
+    delete:
+      operationId: cancelJoin
+      tags:
+        - Games
+        - Matchmaking
+      parameters:
+        - name: gameName
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game Identifier"
+        - name: requestToken
+          in: path
+          schema:
+            type: string
+          description: "Request Identifier"
+      responses:
+        204:
+          description: "OK"
+        400:
+          description: "Join request does not exist"
+components:
+  schemas:
+    PlayerInformation:
+      type: object
+      properties:
+        name:
+          type: string
+        port:
+          type: number

@@ -10,7 +10,7 @@ tags:
 paths:
   /games/{gameName}/levels/{level}/best:
     x-vertx-event-bus:
-      address: games_scores
+      address: edge.games.scores.wabapi
       timeout: 5000
     get:
       operationId: getBestGameLevel
@@ -34,7 +34,7 @@ paths:
           description: "Get best score list"
   /games/{gameName}/levels/{level}/users/{username}:
     x-vertx-event-bus:
-      address: games_scores
+      address: edge.games.scores.wabapi
       timeout: 5000
     put:
       operationId: pushScore

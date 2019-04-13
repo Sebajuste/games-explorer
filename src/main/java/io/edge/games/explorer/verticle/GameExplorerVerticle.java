@@ -1,9 +1,9 @@
 package io.edge.games.explorer.verticle;
 
-import io.edge.games.explorer.service.GameLobbyRegistry;
-import io.edge.games.explorer.service.GameLobbyRegistryAPI;
-import io.edge.games.explorer.service.impl.GameRegistryAPIImpl;
-import io.edge.games.explorer.service.impl.GameRegistryImpl;
+import io.edge.games.explorer.service.LobbyService;
+import io.edge.games.explorer.service.LobbyServiceAPI;
+import io.edge.games.explorer.service.impl.LobbyServiceAPIImpl;
+import io.edge.games.explorer.service.impl.LobbyServiceClusterImpl;
 import io.edge.games.explorer.util.WebApiService;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
@@ -18,7 +18,7 @@ public class GameExplorerVerticle extends AbstractVerticle {
 	@Override
 	public void start() {
 
-		GameLobbyRegistry gameRegistry = new GameRegistryImpl(vertx);
+		LobbyService gameRegistry = new LobbyServiceClusterImpl(vertx);
 
 		/**
 		 * Bind API
@@ -26,18 +26,18 @@ public class GameExplorerVerticle extends AbstractVerticle {
 
 		ServiceBinder serviceBinder = new ServiceBinder(vertx);
 
-		GameLobbyRegistryAPI dashboardServiceAPI = new GameRegistryAPIImpl(gameRegistry);
-		serviceBinder.setAddress(GameLobbyRegistryAPI.ADDRESS).register(GameLobbyRegistryAPI.class, dashboardServiceAPI);
+		LobbyServiceAPI dashboardServiceAPI = new LobbyServiceAPIImpl(gameRegistry);
+		serviceBinder.setAddress(LobbyServiceAPI.ADDRESS).register(LobbyServiceAPI.class, dashboardServiceAPI);
 
 		/**
 		 * Publish Web API
 		 */
 
 		JsonObject config = new JsonObject()//
-				.put("name", "Games-Explorer")//
-				.put("endpoint", "io.edge.games-explorer.yaml")//
-				.put("file", "src/main/resources/games-explorer.yaml")//
-				.put("subpath", "/games-explorer");
+				.put("name", "Games-Lobbies")//
+				.put("endpoint", "io.edge.games-bollies.yaml")//
+				.put("file", "src/main/resources/games-lobbies.yaml")//
+				.put("subpath", "/games-lobbies");
 
 		WebApiService.create(vertx).bind(config);
 

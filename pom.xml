@@ -9,7 +9,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<vertx.version>3.6.3</vertx.version>
+		<vertx.version>3.7.0</vertx.version>
 		<edge.version>0.0.1-SNAPSHOT</edge.version>
 		<main.verticle>io.edge.games.explorer.verticle.LauncherVerticle</main.verticle>
 	</properties>

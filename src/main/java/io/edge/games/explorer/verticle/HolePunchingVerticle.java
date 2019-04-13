@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.edge.games.explorer.bo.Client;
-import io.edge.games.explorer.service.GameLobbyRegistry;
-import io.edge.games.explorer.service.impl.GameRegistryImpl;
+import io.edge.games.explorer.service.LobbyService;
+import io.edge.games.explorer.service.impl.LobbyServiceClusterImpl;
 import io.edge.games.explorer.util.UDPReliability;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -24,7 +24,7 @@ public class HolePunchingVerticle extends AbstractVerticle {
 
 	private final Map<Client, UDPReliability> reliabilityMap = new HashMap<>();
 	
-	private GameLobbyRegistry gameRegistry;
+	private LobbyService gameRegistry;
 
 	private DatagramSocket socket;
 
@@ -53,7 +53,7 @@ public class HolePunchingVerticle extends AbstractVerticle {
 			
 			LOGGER.info("gameServer configured : " + gameServer);
 
-			gameRegistry.register(request.getString("game"), gameServer, ar -> {
+			gameRegistry.register(gameServer.getString("game"), packet.sender().host(), packet.sender().port(), gameServer, ar -> {
 
 				if (ar.succeeded()) {
 
@@ -93,9 +93,9 @@ public class HolePunchingVerticle extends AbstractVerticle {
 
 		} else if ("unregister".equalsIgnoreCase(request.getString("action"))) {
 
-			JsonObject gameServer = request.getJsonObject("server");
+			// JsonObject gameServer = request.getJsonObject("server");
 
-			gameRegistry.unregister(request.getString("game"), gameServer, ar -> {
+			gameRegistry.unregister(request.getString("game"), packet.sender().host(), packet.sender().port(), ar -> {
 
 				if (ar.succeeded()) {
 
@@ -251,7 +251,7 @@ public class HolePunchingVerticle extends AbstractVerticle {
 	@Override
 	public void start(Future<Void> startFuture) {
 
-		this.gameRegistry = new GameRegistryImpl(vertx);
+		this.gameRegistry = new LobbyServiceClusterImpl(vertx);
 
 		DatagramSocketOptions options = new DatagramSocketOptions();
 

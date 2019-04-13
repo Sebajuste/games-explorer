@@ -49,6 +49,12 @@ public class LauncherVerticle extends AbstractVerticle {
 					this.vertx.deployVerticle(ProxyVerticle.class.getName(), options, deployFuture);
 					futureList.add(deployFuture);
 				}
+				
+				if( config.getBoolean("matchmaking", true)) {
+					Future<String> deployFuture = Future.future();
+					this.vertx.deployVerticle(MatchmakingVerticle.class.getName(), options, deployFuture);
+					futureList.add(deployFuture);
+				}
 
 				CompositeFuture.all(futureList).setHandler(deployResult -> {
 

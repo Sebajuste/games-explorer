@@ -10,7 +10,7 @@ import io.vertx.ext.web.api.generator.WebApiServiceGen;
 @WebApiServiceGen
 public interface GameScoreAPI {
 
-	static String ADDRESS = "games_scores";
+	static String ADDRESS = "edge.games.scores.wabapi";
 
 	void getBestGameLevel(String gameName, String level, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
 

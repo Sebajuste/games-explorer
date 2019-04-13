@@ -31,9 +31,8 @@ public class ProxyVerticle extends AbstractVerticle {
 
 		String endpoint = record.getLocation().getString("endpoint");
 
-		DeliveryOptions o = new DeliveryOptions();
-
-		o.addHeader("action", "getOpenAPI");
+		DeliveryOptions o = new DeliveryOptions()//
+				.addHeader("action", "getOpenAPI");
 
 		vertx.eventBus().<Buffer> send(endpoint, new JsonObject(), o, response -> {
 

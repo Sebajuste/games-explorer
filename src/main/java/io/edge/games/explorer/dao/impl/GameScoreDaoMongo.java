@@ -52,16 +52,6 @@ public class GameScoreDaoMongo implements GameScoreDao {
 
 						List<JsonObject> scoreList = ar.result();
 
-						/*
-						scoreList.sort((score1, score2) -> {
-							int scoreDiff = score1.getInteger("score") - score2.getInteger("score");
-							if (scoreDiff != 0) {
-								return scoreDiff;
-							}
-							return score1.getInteger("time") - score2.getInteger("time");
-						});
-						*/
-
 						future.complete(scoreList);
 
 					} else {

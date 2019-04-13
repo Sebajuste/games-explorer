@@ -1,0 +1,116 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Games-Explorer
+
+tags:
+  - name: Games
+    description: ""
+  - name: Lobbies
+    description: ""
+
+paths:
+  /games/{gameName}/lobbies:
+    x-vertx-event-bus:
+      address: edge.games.lobbies.wabapi
+      timeout: 5000
+    get:
+      operationId: getAll
+      tags:
+        - Games
+      parameters:
+        - name: gameName
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game Identifier"
+      responses:
+        200:
+          description: "Get Servers list"
+  /games/{gameName}/lobbies/{server}:
+    x-vertx-event-bus:
+      address: edge.games.lobbies.wabapi
+      timeout: 5000
+    get:
+      operationId: find
+      tags:
+        - Games
+        - Lobbies
+      parameters:
+        - name: gameName
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game Identifier"
+        - name: server
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Server Identifier"
+      responses:
+        200:
+          description: "Game lobby informations"
+    put:
+      operationId: register
+      tags:
+        - Games
+        - Lobbies
+      parameters:
+        - name: gameName
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game Identifier"
+        - name: server
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Server Identifier"
+      requestBody:
+        required: true
+        description: "Server information"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServerInformation"
+      responses:
+        201:
+          description: "Add server"
+    delete:
+      operationId: unregister
+      tags:
+        - Games
+        - Lobbies
+      parameters:
+        - name: gameName
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Game Identifier"
+        - name: server
+          in: path
+          schema:
+            type: string
+          required: true
+          description: "Server Identifier"
+      responses:
+        204:
+          description: "Remove server"
+
+components:
+  schemas:
+    ServerInformation:
+      type: object
+      properties:
+        name:
+          type: string
+        maxPlayer:
+          type: integer
+        currentPlayer:
+          type: integer
