@@ -260,7 +260,7 @@ public class HolePunchingVerticle extends AbstractVerticle {
 
 		this.socket = vertx.createDatagramSocket(options);
 
-		this.socket.listen(config().getInteger("port", 34000), config().getString("interface", "0.0.0.0"), ar -> {
+		this.socket.listen(config().getInteger("HOLEPUNCHING_PORT", 34000), config().getString("HOLEPUNCHING_INTERFACE", "0.0.0.0"), ar -> {
 
 			if (ar.succeeded()) {
 				

@@ -109,7 +109,7 @@ public class MatchmakingVerticle extends AbstractVerticle {
 			
 			List<MatchmakingRequest> gameSessionList = new ArrayList<>();
 			
-			Disposable gameTimeout = requests$.debounce(15L, TimeUnit.SECONDS).subscribe(event -> {
+			Disposable gameTimeout = requests$.debounce(waitStartSessionTime, TimeUnit.SECONDS).subscribe(event -> {
 				LOGGER.info("wait player timeout. size: " + gameSessionList.size());
 				if( gameSessionList.size() >= this.minPlayerPerSession && checkValidRequest(gameSessionList) ) {
 					emitter.onNext(new ArrayList<>(gameSessionList));
