@@ -10,10 +10,14 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.api.OperationRequest;
 import io.vertx.ext.web.api.OperationResponse;
 
 public class LobbyServiceAPIImpl implements LobbyServiceAPI {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(LobbyServiceAPIImpl.class);
 
 	private final LobbyService gameRegistry;
 
@@ -71,19 +75,23 @@ public class LobbyServiceAPIImpl implements LobbyServiceAPI {
 	}
 
 	@Override
-	public void register(String gameName, String server, JsonObject information, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
+	public void register(String gameName, String server, JsonObject body, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
 
-		String[] serverSplit = server.split(":");
-		String host = serverSplit[0];
-		int port = Integer.parseInt(serverSplit[1]);
+		String host = body.getString("host");
+		int port = body.getInteger("port");
 
-		this.gameRegistry.register(gameName, host, port, information, ar -> {
+		body.put("name", server);
+		body.put("timestamp", System.currentTimeMillis());
+		
+
+		this.gameRegistry.register(gameName, host, port, body, ar -> {
 
 			OperationResponse response = new OperationResponse();
 
 			if (ar.succeeded()) {
 				response.setStatusCode(ar.result() ? HttpResponseStatus.CREATED.code() : HttpResponseStatus.NO_CONTENT.code());
 			} else {
+				LOGGER.error(ar.cause());
 				response.setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
 			}
 

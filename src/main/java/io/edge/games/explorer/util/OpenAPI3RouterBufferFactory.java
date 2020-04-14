@@ -12,8 +12,8 @@ import io.swagger.v3.parser.ResolverCache;
 import io.swagger.v3.parser.core.models.AuthorizationValue;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
@@ -36,8 +36,8 @@ public class OpenAPI3RouterBufferFactory {
 	public static void create(Vertx vertx, Buffer buffer, List<JsonObject> auth, Handler<RoutingContext> globalHandler, Handler<AsyncResult<OpenAPI3RouterFactory>> handler) {
 
 		List<AuthorizationValue> authorizationValues = auth.stream().map(obj -> obj.mapTo(AuthorizationValue.class)).collect(Collectors.toList());
-
-		vertx.executeBlocking((Future<OpenAPI3RouterFactory> future) -> {
+		
+		vertx.executeBlocking((Promise<OpenAPI3RouterFactory> promise) -> {
 			SwaggerParseResult swaggerParseResult = new OpenAPIV3Parser().readContents(buffer.toString(Charset.defaultCharset()), authorizationValues, OpenApi3Utils.getParseOptions());
 			if (swaggerParseResult.getMessages().isEmpty()) {
 
@@ -47,12 +47,12 @@ public class OpenAPI3RouterBufferFactory {
 					openAPI3RouterFactory.addGlobalHandler(globalHandler);
 				}
 
-				future.complete(openAPI3RouterFactory);
+				promise.complete(openAPI3RouterFactory);
 			} else {
 				if (swaggerParseResult.getMessages().size() == 1 && swaggerParseResult.getMessages().get(0).matches("unable to read location `?\\Q" + "" + "\\E`?"))
-					future.fail(RouterFactoryException.createSpecNotExistsException(""));
+					promise.fail(RouterFactoryException.createSpecNotExistsException(""));
 				else
-					future.fail(RouterFactoryException.createSpecInvalidException(StringUtils.join(swaggerParseResult.getMessages(), ", ")));
+					promise.fail(RouterFactoryException.createSpecInvalidException(StringUtils.join(swaggerParseResult.getMessages(), ", ")));
 			}
 		}, handler);
 	}
