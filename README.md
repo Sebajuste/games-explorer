@@ -7,7 +7,7 @@ Games Explorer
 
 - Score
 
-*Service to mange hight score*
+*Service to manage hight score*
 
 - Matchmaking
 

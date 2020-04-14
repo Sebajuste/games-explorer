@@ -26,8 +26,8 @@ public class GameExplorerVerticle extends AbstractVerticle {
 
 		ServiceBinder serviceBinder = new ServiceBinder(vertx);
 
-		LobbyServiceAPI dashboardServiceAPI = new LobbyServiceAPIImpl(gameRegistry);
-		serviceBinder.setAddress(LobbyServiceAPI.ADDRESS).register(LobbyServiceAPI.class, dashboardServiceAPI);
+		LobbyServiceAPI lobbyServiceAPI = new LobbyServiceAPIImpl(gameRegistry);
+		serviceBinder.setAddress(LobbyServiceAPI.ADDRESS).register(LobbyServiceAPI.class, lobbyServiceAPI);
 
 		/**
 		 * Publish Web API
@@ -35,7 +35,7 @@ public class GameExplorerVerticle extends AbstractVerticle {
 
 		JsonObject config = new JsonObject()//
 				.put("name", "Games-Lobbies")//
-				.put("endpoint", "io.edge.games-bollies.yaml")//
+				.put("endpoint", "io.edge.games-lobbies.yaml")//
 				.put("file", "src/main/resources/games-lobbies.yaml")//
 				.put("subpath", "/games-lobbies");
 

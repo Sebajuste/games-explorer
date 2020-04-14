@@ -16,7 +16,7 @@ public interface LobbyServiceAPI {
 
 	void find(String gameName, String server, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
 
-	void register(String gameName, String server, JsonObject information, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
+	void register(String gameName, String server, JsonObject body, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
 
 	void unregister(String gameName, String server, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
 

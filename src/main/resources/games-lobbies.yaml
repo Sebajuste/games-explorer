@@ -108,9 +108,11 @@ components:
     ServerInformation:
       type: object
       properties:
-        name:
+        host:
           type: string
-        maxPlayer:
+        port:
           type: integer
-        currentPlayer:
+        max_players:
+          type: integer
+        current_players:
           type: integer
